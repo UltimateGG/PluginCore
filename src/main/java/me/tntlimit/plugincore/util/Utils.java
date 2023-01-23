@@ -69,16 +69,17 @@ public class Utils {
 	 * <code>
 	 * item:<br>
 	 *   material: GOLD_BLOCK<br>
-	 *   name: '&c&lAdvertising'<br>
+	 *   name: '&amp;c&amp;lAdvertising'<br>
 	 *   lore:<br>
-	 *     - '&7Click to kick the player for advertising'<br>
+	 *     - '&amp;7Click to kick the player for advertising'<br>
 	 * </code>
 	 * <br><br>
 	 * Amount is optional and defaults to 1<br>
 	 * Data is optional and defaults to 0
 	 *
 	 * @param key The path to the item in the config
-	 * @return The item or null if the config is invalid
+	 * @param def The default item to return if the config is invalid
+	 * @return The item or the default item if the config is invalid
 	 */
 	@SuppressWarnings("deprecation")
 	public static ItemStack getItemFromConfig(String key, ItemStack def) {
