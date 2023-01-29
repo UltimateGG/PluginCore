@@ -1,6 +1,7 @@
 package me.tntlimit.plugincore.util;
 
 import me.tntlimit.plugincore.base.PluginBase;
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.inventory.ItemStack;
@@ -16,6 +17,8 @@ import java.util.List;
 
 public class Utils {
 	public static final List<String> EMPTY_LIST = Collections.emptyList();
+	private static ItemStack FILLER;
+	private static ItemStack INVALID;
 
 
 	/**
@@ -118,6 +121,58 @@ public class Utils {
 	 * @return The item or a dirt block if the config is invalid
 	 */
 	public static ItemStack getItemFromConfig(String key) {
-		return getItemFromConfig(key, new ItemStack(Material.DIRT));
+		if (INVALID == null) {
+			INVALID = new ItemStack(Material.DIRT);
+			setItemName(INVALID, "&cInvalid item config");
+			setItemLore(INVALID, "&7Please check your config.yml");
+		}
+
+		return getItemFromConfig(key, INVALID);
+	}
+
+	/**
+	 * Returns a blank black stained-glass pane with a name and lore of &7
+	 * @return The filler item
+	 */
+	public static ItemStack getDefaultFiller() {
+		if (FILLER != null) return FILLER;
+
+		FILLER = new ItemStack(Material.BLACK_STAINED_GLASS_PANE);
+		setItemName(FILLER, "&7");
+		setItemLore(FILLER,"&7");
+
+		return FILLER;
+	}
+
+	/**
+	 * Set the display name of an item
+	 * Color codes are automatically translated via {@link ChatColor#translateAlternateColorCodes(char, String)}
+	 * @param item The item to set the name of
+	 * @param s The name to set
+	 */
+	public static void setItemName(ItemStack item, String s) {
+		ItemMeta meta = item.getItemMeta();
+		if (meta == null || s == null) return;
+		meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', s));
+		item.setItemMeta(meta);
+	}
+
+	/**
+	 * Set the lore of an item
+	 * Color codes are automatically translated via {@link ChatColor#translateAlternateColorCodes(char, String)}
+	 * @param item The item to set the lore of
+	 * @param lore The lore to set
+	 */
+	public static void setItemLore(ItemStack item, String... lore) {
+		ItemMeta meta = item.getItemMeta();
+		if (meta == null) return;
+
+		ArrayList<String> coloredLore = new ArrayList<>();
+		for (String s : lore)
+			if (s != null)
+				coloredLore.add(ChatColor.translateAlternateColorCodes('&', s));
+
+		meta.setLore(coloredLore);
+		item.setItemMeta(meta);
 	}
 }
