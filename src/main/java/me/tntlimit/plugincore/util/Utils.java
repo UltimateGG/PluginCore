@@ -122,9 +122,10 @@ public class Utils {
 	 */
 	public static ItemStack getItemFromConfig(String key) {
 		if (INVALID == null) {
-			INVALID = new ItemStack(Material.DIRT);
-			setItemName(INVALID, "&cInvalid item config");
-			setItemLore(INVALID, "&7Please check your config.yml");
+			INVALID = new ItemBuilder(Material.DIRT)
+					.setDisplayName("&cInvalid item config")
+					.setLore("&7Please check your config.yml")
+					.build();
 		}
 
 		return getItemFromConfig(key, INVALID);
@@ -137,42 +138,7 @@ public class Utils {
 	public static ItemStack getDefaultFiller() {
 		if (FILLER != null) return FILLER;
 
-		FILLER = new ItemStack(Material.BLACK_STAINED_GLASS_PANE);
-		setItemName(FILLER, "&7");
-		setItemLore(FILLER,"&7");
-
+		FILLER = new ItemBuilder(Material.BLACK_STAINED_GLASS_PANE).blank().build();
 		return FILLER;
-	}
-
-	/**
-	 * Set the display name of an item
-	 * Color codes are automatically translated via {@link ChatColor#translateAlternateColorCodes(char, String)}
-	 * @param item The item to set the name of
-	 * @param s The name to set
-	 */
-	public static void setItemName(ItemStack item, String s) {
-		ItemMeta meta = item.getItemMeta();
-		if (meta == null || s == null) return;
-		meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', s));
-		item.setItemMeta(meta);
-	}
-
-	/**
-	 * Set the lore of an item
-	 * Color codes are automatically translated via {@link ChatColor#translateAlternateColorCodes(char, String)}
-	 * @param item The item to set the lore of
-	 * @param lore The lore to set
-	 */
-	public static void setItemLore(ItemStack item, String... lore) {
-		ItemMeta meta = item.getItemMeta();
-		if (meta == null) return;
-
-		ArrayList<String> coloredLore = new ArrayList<>();
-		for (String s : lore)
-			if (s != null)
-				coloredLore.add(ChatColor.translateAlternateColorCodes('&', s));
-
-		meta.setLore(coloredLore);
-		item.setItemMeta(meta);
 	}
 }
